@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/Icones">
+        <file>crayon.png</file>
+        <file>gomme.jpg</file>
+        <file>exit.jpg</file>
+        <file>redo.png</file>
+        <file>size.png</file>
+        <file>undo.png</file>
+        <file>Gomme.png</file>
+    </qresource>
+    <qresource prefix="/Fond">
+        <file>capy.jpg</file>
+        <file>blanc.png</file>
+    </qresource>
+</RCC>
