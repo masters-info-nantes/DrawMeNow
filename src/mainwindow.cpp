@@ -17,8 +17,9 @@ MainWindow::MainWindow()
 
     //style de la fenetre
     QPalette palette;
-    QColor color(242,235,235);
-   // QColor color(Qt::white);
+    //QColor color(242,235,235);
+   // QColor color(205,205,205);
+    QColor color(Qt::black);
     palette.setBrush(this->backgroundRole(), QBrush(color));
    this->setPalette(palette);
 
@@ -135,11 +136,12 @@ MainWindow::MainWindow()
 
     toolBar = addToolBar("Tools");
     toolBar->setMovable(false);
-
+    toolBar->setStyleSheet("background-color:#DEDEDE;");
 
     //----show/hide bg button----------
     backgButton = new QCheckBox("Hide background",this);
     backgButton->setTristate(false);
+    backgButton->setCursor(Qt::PointingHandCursor);
     connect(backgButton, SIGNAL(clicked(bool)), this, SLOT(hideBackground(bool)));
 
     //pour eviter que le focus soit sur la checkbox
@@ -398,7 +400,7 @@ void MainWindow::exportAs()
 void MainWindow::setImage(QString path)
 {
     img = QImage(path);
-    pix = pix.fromImage(img.scaled(780,420,Qt::IgnoreAspectRatio,Qt::SmoothTransformation));
+    pix = pix.fromImage(img.scaled(780,475,Qt::IgnoreAspectRatio,Qt::SmoothTransformation));
     image->setPixmap(pix);
 }
 

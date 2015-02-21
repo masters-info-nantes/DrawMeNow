@@ -29,6 +29,7 @@ public:
     QSpinBox *size;
 
     QLabel *label;
+    QLabel *labelsize;
     QVBoxLayout *layout;
     QHBoxLayout *boutons;
     QPushButton *clean;

@@ -19,7 +19,11 @@ SOURCES += main.cpp \
     zoneimage.cpp \
     sizemodule.cpp \
     fonddessin.cpp \
-    projectfileparser.cpp
+    projectfileparser.cpp \
+    videomodule.cpp \
+    imagemodule.cpp \
+    fnumbermodule.cpp \
+    imagedefiler.cpp
 
 HEADERS  += \
     mainwindow.h \
@@ -28,7 +32,11 @@ HEADERS  += \
     zoneimage.h \
     sizemodule.h \
     fonddessin.h \
-    projectfileparser.h
+    projectfileparser.h \
+    videomodule.h \
+    imagemodule.h \
+    fnumbermodule.h \
+    imagedefiler.h
 
 FORMS    +=
 

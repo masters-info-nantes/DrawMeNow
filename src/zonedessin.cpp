@@ -3,7 +3,7 @@
 
 zoneDessin::zoneDessin()
 {
-    setFixedSize(780,420);
+    setFixedSize(780,475);
     setPalette(QPalette(QColor(255, 255, 255)));
     setAutoFillBackground(true);
 
@@ -18,9 +18,9 @@ zoneDessin::zoneDessin()
     pen.setCapStyle(Qt::RoundCap);
     setCursor(Qt::CrossCursor);
 
-    image = new QImage(780,420,QImage::Format_ARGB32_Premultiplied);
-    previous = new QImage(780,420,QImage::Format_ARGB32_Premultiplied);
-    next = new QImage(780,420,QImage::Format_ARGB32_Premultiplied);
+    image = new QImage(780,475,QImage::Format_ARGB32_Premultiplied);
+    previous = new QImage(780,475,QImage::Format_ARGB32_Premultiplied);
+    next = new QImage(780,475,QImage::Format_ARGB32_Premultiplied);
 
 }
 
@@ -56,9 +56,9 @@ QColor zoneDessin::getPenColor()
 
 void zoneDessin::resetImage()
 {
-    image = new QImage(780,420,QImage::Format_ARGB32_Premultiplied);
-    previous = new QImage(780,420,QImage::Format_ARGB32_Premultiplied);
-    next = new QImage(780,420,QImage::Format_ARGB32_Premultiplied);
+    image = new QImage(780,475,QImage::Format_ARGB32_Premultiplied);
+    previous = new QImage(780,475,QImage::Format_ARGB32_Premultiplied);
+    next = new QImage(780,475,QImage::Format_ARGB32_Premultiplied);
     update();
 }
 
@@ -80,7 +80,7 @@ void zoneDessin::mouseMoveEvent(QMouseEvent *event)
           //  painter.setBackground(QBrush(QPixmap(":Fond/capy.jpg")));
             painter.setPen(pen);
             painter.setCompositionMode( QPainter::CompositionMode_Clear );
-            painter.eraseRect(QRectF(event->pos().x(),event->pos().y(),pen.width(),pen.width()));
+            painter.eraseRect(QRectF(event->pos().x()-(pen.width()/2),event->pos().y()-(pen.width()/2),pen.width(),pen.width()));
             painter.setCompositionMode( QPainter::CompositionMode_SourceOver );
             pos = event->pos();
             update();
