@@ -2,7 +2,7 @@
 #include <QAction>
 #include <QApplication>
 
-fnumberModule::fnumberModule()
+fnumberModule::fnumberModule(int max)
 {
     setFixedSize(200,100);
 
@@ -14,9 +14,18 @@ fnumberModule::fnumberModule()
 
 
     box = new QSpinBox();
-    box->setMaximum(3);
-    box->setMinimum(1);
-    box->setValue(1);
+    if(max ==0)
+    {
+        box->setMaximum(max);
+        box->setMinimum(0);
+        box->setValue(0);
+    }
+    else
+    {
+        box->setMaximum(max);
+        box->setMinimum(1);
+        box->setValue(1);
+    }
 
     //si on met pas la suite le texte est blanc
     QPalette* palette = new QPalette();
@@ -33,12 +42,23 @@ fnumberModule::fnumberModule()
     go->setFixedSize(50,30);
    // go->setPalette(*palette);
     go->setStyleSheet("border-color: black; color : black;");
+    if(max !=0)
+    {connect(go, SIGNAL(clicked()), this, SLOT(valideValue()));}
 
-   // connect(go, SIGNAL(clicked(bool)), this, SLOT(hideBackground(bool)));
-
-
+    go->setCursor(Qt::PointingHandCursor);
     choice->addWidget(go);
 
     layout->addLayout(choice);
     setLayout(layout);
+}
+
+
+void fnumberModule::valideValue()
+{
+    emit  valueChange(box->value());
+}
+
+void fnumberModule::setValue(int value)
+{
+    box->setValue(value);
 }

@@ -10,7 +10,7 @@ class zoneDessin : public QWidget
 
 public:
 
-    zoneDessin();
+    zoneDessin(QString path);
     void paintEvent(QPaintEvent *e);
     void mouseMoveEvent(QMouseEvent *event);
     void mousePressEvent(QMouseEvent *event);
@@ -20,16 +20,22 @@ public:
     void setPenWidth( int width);
     void setSize(int weight , int height);
     void setRubber(bool isRubber);
-
-    QColor getPenColor();
-    int getPenWidth();
+    void setImgPath(QString path);
 
     void resetImage();
     void undo();
     void redo();
+    void saveImage();
     void saveImage(QString path);
+    void loadImage(QString path);
+    void activeSave(bool active);
 
 
+    QColor getPenColor();
+    int getPenWidth();
+    QString imgPath;
+    bool save;
+    QImage  img;
 
 
  /*   QPainter *painter;

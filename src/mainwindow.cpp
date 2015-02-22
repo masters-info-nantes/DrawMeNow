@@ -50,12 +50,16 @@ MainWindow::MainWindow()
 
     frequency6 = new QAction("6 fps", this);
     frequency6->setCheckable(true);
+    connect(frequency6,SIGNAL(triggered(bool)),this,SLOT(goTo6Fps()));
     frequency8 = new QAction("8 fps", this);
     frequency8->setCheckable(true);
+    connect(frequency8,SIGNAL(triggered(bool)),this,SLOT(goTo8Fps()));
     frequency12 = new QAction("12 fps", this);
     frequency12->setCheckable(true);
+    connect(frequency12,SIGNAL(triggered(bool)),this,SLOT(goTo12Fps()));
     frequency24 = new QAction("24 fps", this);
     frequency24->setCheckable(true);
+    connect(frequency24,SIGNAL(triggered(bool)),this,SLOT(goTo24Fps()));
 
     //----menu layer frequency actions-----
     layerF1 = new QAction("1/1", this);
@@ -267,27 +271,32 @@ MainWindow::MainWindow()
 
     //---------------partie gauche----------------------------------
 
-    zoneIm = new zoneImage();
-
+    zoneIm = new zoneImage("","",0);
+   // zoneIm = new zoneImage("/home/muriel/workspace/Test/src/images",74);
+    connect(zoneIm,SIGNAL(imageChange(QString,QString)),this,SLOT(imageChanged(QString,QString)));
     mainLayout->addWidget(zoneIm);
 
     //---------------partie droite-----------------------------------
     rLayout = new QVBoxLayout();
-    zoneTravail = new QGridLayout();
 
     image = new QLabel("test");
 
     //fond
     fond = new fondDessin();
-    zoneTravail->addWidget(fond,0,0);
+    zoneDes = new zoneDessin("");
+    zoneDes->activeSave(true);
 
     //image de fond
-    imgPath = QString(":Fond/capy.jpg");
-    setImage(imgPath);
-    zoneTravail->addWidget(image,0,0);
+    //imgPath = QString(":Fond/capy.jpg");
+    //setimage construit la zone de travail
+    setImage(":Fond/blanc.png");
+    imgPath = ":Fond/blanc.png";
 
-    zoneDes = new zoneDessin();
+    zoneTravail = new QGridLayout();
+    zoneTravail->addWidget(fond,0,0);
+    zoneTravail->addWidget(image,0,0);
     zoneTravail->addWidget(zoneDes,0,0);
+
 
     //pour rendre transparent
     zoneDes->setStyleSheet("background:transparent;");
@@ -317,6 +326,7 @@ MainWindow::MainWindow()
     int y = desktop_height / 2 - height() / 2 - 25;
     move(QPoint(x, y));
     show();
+
 }
 
 
@@ -399,12 +409,27 @@ void MainWindow::exportAs()
 
 void MainWindow::setImage(QString path)
 {
-    img = QImage(path);
+    QString finalPath;
+    if(path != ":Fond/blanc.png")
+    {
+        imgPath = path;
+        finalPath = path;
+    }
+    if(backgButton->isChecked())
+    {
+        finalPath = ":Fond/blanc.png";
+    }
+    else
+    {
+        finalPath = path;
+    }
+    img = QImage(finalPath);
     pix = pix.fromImage(img.scaled(780,475,Qt::IgnoreAspectRatio,Qt::SmoothTransformation));
+
     image->setPixmap(pix);
 }
 
-
+//cache l'image de fond ou la remet
 void MainWindow::hideBackground(bool checked)
 {
     if(checked)
@@ -416,4 +441,108 @@ void MainWindow::hideBackground(bool checked)
         setImage(imgPath);
     }
     setFocus();
+}
+
+
+void MainWindow::setVideo(QString path,QString folder,int framerate)
+{
+    videoPath = path;
+    fps = framerate;
+    projectFolder = folder;
+
+    videoM = new videoModule(videoPath,fps);
+    connect(videoM,SIGNAL(firstImageReady()),this,SLOT(imgReady()));
+
+    //decomposition de la video avec un message d'attente et un changement de curseur
+    setCursor(Qt::WaitCursor);
+
+    videoM->buildFrame(folder);
+    setCursor(Qt::ArrowCursor);
+
+    //on attendras le signal pour changer l'image de fond
+    valideFps(framerate);
+}
+
+void MainWindow::setFps(int fps)
+{
+   setVideo(videoPath,projectFolder,fps);
+}
+
+void MainWindow::imageChanged(QString path , QString desPath)
+{
+    setImage(path);
+    setDessin(desPath);
+}
+
+//degueulasse mais bon...
+void MainWindow::valideFps(int fps)
+{
+    if(fps == 6)
+    {
+        frequency6->setChecked(true);
+        frequency8->setChecked(false);
+        frequency12->setChecked(false);
+        frequency24->setChecked(false);
+
+    }else if(fps == 8)
+    {
+        frequency6->setChecked(false);
+        frequency8->setChecked(true);
+        frequency12->setChecked(false);
+        frequency24->setChecked(false);
+
+    }else if(fps == 12)
+    {
+        frequency6->setChecked(false);
+        frequency8->setChecked(false);
+        frequency12->setChecked(true);
+        frequency24->setChecked(false);
+
+    }else if(fps == 24)
+    {
+        frequency6->setChecked(false);
+        frequency8->setChecked(false);
+        frequency12->setChecked(false);
+        frequency24->setChecked(true);
+    }
+}
+
+void MainWindow::goTo6Fps()
+{
+    setFps(6);
+}
+
+void MainWindow::goTo8Fps()
+{
+    setFps(8);
+}
+
+void MainWindow::goTo12Fps()
+{
+    setFps(12);
+}
+
+void MainWindow::goTo24Fps()
+{
+    setFps(24);
+
+}
+
+void MainWindow::imgReady()
+{
+    setImage(videoM->getCurrentImg());
+    //on change les images de cote
+    //QMessageBox::information(this, "Draw Me Now", QString::number(videoM->frameNumber()));
+    zoneIm->setParam(videoM->getImgFolder(),videoM->getDesFolder(),videoM->frameNumber());
+    zoneDes->loadImage(videoM->getCurrentDes());
+    //zoneDes->setImgPath(videoM->getCurrentDes());
+}
+
+void MainWindow::setDessin(QString path)
+{
+    zoneDes->loadImage(path);
+    zoneDes->setStyleSheet("background:transparent;");
+    zoneDes->setAttribute(Qt::WA_TranslucentBackground);
+    zoneDes->setWindowFlags(Qt::FramelessWindowHint);
+    zoneDes->update();
 }

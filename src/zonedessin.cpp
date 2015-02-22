@@ -1,7 +1,7 @@
 #include "zonedessin.h"
 #include <qapplication.h>
 
-zoneDessin::zoneDessin()
+zoneDessin::zoneDessin(QString imgPath)
 {
     setFixedSize(780,475);
     setPalette(QPalette(QColor(255, 255, 255)));
@@ -18,10 +18,12 @@ zoneDessin::zoneDessin()
     pen.setCapStyle(Qt::RoundCap);
     setCursor(Qt::CrossCursor);
 
+    this->imgPath = imgPath;
+
     image = new QImage(780,475,QImage::Format_ARGB32_Premultiplied);
     previous = new QImage(780,475,QImage::Format_ARGB32_Premultiplied);
     next = new QImage(780,475,QImage::Format_ARGB32_Premultiplied);
-
+    save = false;
 }
 
 void zoneDessin::setPenColor(QColor color)
@@ -32,6 +34,16 @@ void zoneDessin::setPenColor(QColor color)
 void zoneDessin::setPenWidth( int width)
 {
     pen.setWidth(width);
+}
+
+void zoneDessin::activeSave(bool active)
+{
+    save = active;
+}
+
+void zoneDessin::setImgPath(QString path)
+{
+    imgPath = path;
 }
 
 void zoneDessin::setSize(int weight , int height)
@@ -113,6 +125,7 @@ void zoneDessin::mousePressEvent(QMouseEvent *event)
 void zoneDessin::mouseReleaseEvent(QMouseEvent *event)
 {
    tracer = false;
+   if(save){saveImage();}
    pos = QPoint(0,0);
 }
 
@@ -120,6 +133,7 @@ void zoneDessin::undo()
 {
     next = new QImage(image->copy());
     image = new QImage(previous->copy());
+    if(save){saveImage();}
     update();
 }
 
@@ -127,12 +141,39 @@ void zoneDessin::redo()
 {
     previous = new QImage(image->copy());
     image = new QImage(next->copy());
+    if(save){saveImage();}
     update();
+}
+
+void zoneDessin::saveImage()
+{
+    image->save(imgPath);
 }
 
 void zoneDessin::saveImage(QString path)
 {
     image->save(path);
+}
+
+void zoneDessin::loadImage(QString path)
+{
+    //si l'image n'existe pas encore il faut la créer
+    if(QFile(path).exists())
+    {
+        resetImage();
+        imgPath = path;
+        QImage img(path);
+        image = new QImage(img.scaled(780,475,Qt::IgnoreAspectRatio,Qt::SmoothTransformation));
+        previous = image;
+        next = image;
+    }
+    else
+    {
+        resetImage();
+        imgPath = path;
+        image->save(path);
+    }
+    update();
 }
 
 

@@ -9,7 +9,7 @@ class fnumberModule : public QWidget
 {
     Q_OBJECT
 public:
-    fnumberModule();
+    fnumberModule(int max);
 
     QVBoxLayout *layout;
     QHBoxLayout *choice;
@@ -17,6 +17,14 @@ public:
     QLabel *lab;
     QSpinBox *box;
     QPushButton *go;
+
+    void setValue(int value);
+
+public slots:
+    void valideValue();
+
+signals:
+     void valueChange(int value);
 };
 
 #endif // FNUMBERMODULE_H

@@ -39,6 +39,7 @@ zonePreview::zonePreview()
 
     preview = new QPushButton("Preview");
     preview->setStyleSheet("border-color: black; color : black;");
+    preview->setCursor(Qt::PointingHandCursor);
     layout->addWidget(preview,0,3,2,1);
 
     setLayout(layout);

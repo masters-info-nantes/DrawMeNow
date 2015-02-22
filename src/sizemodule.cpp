@@ -11,15 +11,10 @@ sizeModule::sizeModule(MainWindow *main)
       label = new QLabel("Draw here to see the pen size :");
       layout->addWidget(label);
 
-      zone = new zoneDessin();
+      zone = new zoneDessin("");
       zone->setSize(200,200);
       layout->addWidget(zone);
 
- /*     slider = new QSlider(Qt::Horizontal);
-      slider->setRange(1, 10);
-      slider->setValue(1);
-      connect(slider, SIGNAL(valueChanged(int)),this, SLOT(setPenSize(int)));
-      layout->addWidget(slider);*/
       //bouton pour clean la zone de dessin
       clean = new QPushButton("Clean Drawing Area");
       connect(clean, SIGNAL(clicked()),this, SLOT(cleanW()));
@@ -28,17 +23,17 @@ sizeModule::sizeModule(MainWindow *main)
       labelsize = new QLabel("Pen size :");
       layout->addWidget(labelsize);
 
+      //si on veut plus grand il faut changer le max
       size = new QSpinBox;
-      size->setMaximum(30);
+      size->setMaximum(50);
       size->setMinimum(1);
       size->setValue(1);
       connect(size, SIGNAL(valueChanged(int)),this, SLOT(setPenSize(int)));
       layout->addWidget(size);
 
 
-
       //bouton de validation
-      boutons = new QHBoxLayout(this);
+      boutons = new QHBoxLayout();
       validate = new QPushButton("Ok");
       connect(validate, SIGNAL(clicked()),this, SLOT(validateW()));
       boutons->addWidget(validate);

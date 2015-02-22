@@ -8,6 +8,7 @@
 #include <QtWidgets>
 #include <QObject>
 #include <sizemodule.h>
+#include <videomodule.h>
 
 class sizeModule;
 
@@ -85,8 +86,11 @@ public:
     QImage img;
     QPixmap pix;
 
+    videoModule *videoM;
     //-----donnees----------
     QString imgPath;
+    QString videoPath;
+    QString projectFolder;
     int layerFr;
     int layerNum;
     int fps;
@@ -94,6 +98,11 @@ public:
 
     void setPenSize(int size);
     void setImage(QString path);
+    void setVideo(QString path,QString folder,int framerate);
+    void setFps(int fps);
+    void setDessin(QString path);
+
+    void valideFps(int fps);
 
 public slots:
 
@@ -104,9 +113,16 @@ public slots:
     void redoClick();
     void rubberClick();
     void penClick();
+    void imageChanged(QString path, QString desPath);
+
+    void goTo6Fps();
+    void goTo8Fps();
+    void goTo12Fps();
+    void goTo24Fps();
 
     void exportAs();
     void hideBackground(bool checked);
+    void imgReady();
 };
 
 #endif // MAINWINDOW_H
