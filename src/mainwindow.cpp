@@ -21,7 +21,7 @@ MainWindow::MainWindow()
    // QColor color(205,205,205);
     QColor color(Qt::black);
     palette.setBrush(this->backgroundRole(), QBrush(color));
-   this->setPalette(palette);
+    this->setPalette(palette);
 
 
     //-------------------Barre de Menu---------------------------
@@ -43,8 +43,9 @@ MainWindow::MainWindow()
 
     //export
     exportMovie = new QAction("Movie", this);
-    exportImage = new QAction("Image", this);
-    connect(exportImage,SIGNAL(triggered(bool)),this,SLOT(exportAs()));
+    connect(exportMovie,SIGNAL(triggered(bool)),this,SLOT(exportAsMovie()));
+    exportImage = new QAction("Images", this);
+    connect(exportImage,SIGNAL(triggered(bool)),this,SLOT(exportAsImages()));
 
    //----menu frequency actions-----
 
@@ -64,11 +65,14 @@ MainWindow::MainWindow()
     //----menu layer frequency actions-----
     layerF1 = new QAction("1/1", this);
     layerF1->setCheckable(true);
+    layerF1->setChecked(true);
+    connect(layerF1,SIGNAL(triggered(bool)),this,SLOT(goTo1LF()));
     layerF2 = new QAction("1/2", this);
     layerF2->setCheckable(true);
+    connect(layerF2,SIGNAL(triggered(bool)),this,SLOT(goTo2LF()));
     layerF3 = new QAction("1/3", this);
     layerF3->setCheckable(true);
-
+    connect(layerF3,SIGNAL(triggered(bool)),this,SLOT(goTo3LF()));
 
     //-------Menu File---------
 
@@ -107,6 +111,10 @@ MainWindow::MainWindow()
     menuBar()->addSeparator();
 
     //-------Menu Layer---------
+    layerFr = 1;
+    layerNum = 0;
+    //layerNum = 4;
+
     layerMenu = menuBar()->addMenu("Layer");
     layerFrequency = layerMenu->addMenu("Layer Frequency");
 
@@ -125,11 +133,15 @@ MainWindow::MainWindow()
 
     //le menu est une qspinbox
     layerN = new QWidgetAction(layerNumber);
-    layer = new QSpinBox;
+ /*   layer = new QSpinBox;
     layer->setMaximum(20);
     layer->setMinimum(0);
-    layer->setValue(1);
+    layer->setValue(layerNum);*/
+    layer = new layerNModule(layerNum);
+    connect(layer, SIGNAL(numberLChanged(int)), this, SLOT(setLayerN(int)));
+  //  connect(layer, SIGNAL(numberLCancel()), this, SLOT(closeNumberL()));
     layerN->setDefaultWidget(layer);
+ //   connect(layer,SIGNAL(valueChanged(int)),this,SLOT(setLayerNumber(int)));
 
     layerNumber->addAction(layerN);
 
@@ -273,7 +285,7 @@ MainWindow::MainWindow()
 
     zoneIm = new zoneImage("","",0);
    // zoneIm = new zoneImage("/home/muriel/workspace/Test/src/images",74);
-    connect(zoneIm,SIGNAL(imageChange(QString,QString)),this,SLOT(imageChanged(QString,QString)));
+    connect(zoneIm,SIGNAL(imageChange(QString,QString,int)),this,SLOT(imageChanged(QString,QString,int)));
     mainLayout->addWidget(zoneIm);
 
     //---------------partie droite-----------------------------------
@@ -286,6 +298,12 @@ MainWindow::MainWindow()
     zoneDes = new zoneDessin("");
     zoneDes->activeSave(true);
 
+    //layers
+    zoneLay = new zoneLayer();
+    zoneLay->setStyleSheet("background:transparent;");
+    zoneLay->setAttribute(Qt::WA_TranslucentBackground);
+  //  zoneDes->setWindowFlags(Qt::FramelessWindowHint);
+
     //image de fond
     //imgPath = QString(":Fond/capy.jpg");
     //setimage construit la zone de travail
@@ -295,6 +313,7 @@ MainWindow::MainWindow()
     zoneTravail = new QGridLayout();
     zoneTravail->addWidget(fond,0,0);
     zoneTravail->addWidget(image,0,0);
+    zoneTravail->addWidget(zoneLay,0,0);
     zoneTravail->addWidget(zoneDes,0,0);
 
 
@@ -327,20 +346,6 @@ MainWindow::MainWindow()
     move(QPoint(x, y));
     show();
 
-}
-
-
-void MainWindow::sauvegarder()
-{
-    //Choix du chemin d'enregistrement
-  /*  QString texte = "RDV le " + dateedit->text() + " à " + timeedit->text() + "\na : " +lineEdit->text() +"\ndescription: " + textedit->toPlainText();
-    QString fichier = QFileDialog::getSaveFileName(this, "Enregistrer", QString(), "Tout");
-    QFile sauvegarde(fichier);
-    if (sauvegarde.open(QFile::WriteOnly))
-       {
-           QTextStream out(&sauvegarde);
-           out << texte ;
-       }*/
 }
 
 void MainWindow::colorClick()
@@ -397,14 +402,39 @@ void MainWindow::penClick()
     buttonRubber->setStyleSheet(";");
 }
 
-//a ameliorer pour le suffixe
-void MainWindow::exportAs()
+
+void MainWindow::exportAsImages()
 {
     QFileDialog dialog(this);
    // dialog.setDefaultSuffix(".png");
-    QString path = dialog.getSaveFileName(this, "Enregistrer", QString(), "Image Files (*.png *.jpg *.bmp)");
-    QString completepath(path + ".png");
-    zoneDes->saveImage(completepath);
+    QString path = dialog.getExistingDirectory(this, "Choose a Directory to Export Images", QString());
+  //  QString completepath(path + ".png");
+  //  zoneDes->saveImage(completepath);
+
+    if(path != "")
+    {
+        QDir dir(path);
+        dir.mkpath(path);
+
+        for(int i =1; i <=videoM->frameNumber();i++)
+        {
+            QImage *img;
+            img = new QImage(QString(videoM->getDesFolder() + "/dessin" + QString::number(i) + ".png"));
+            img->save(QString(path + "/dessin" + QString::number(i) + ".png"));
+        }
+        QMessageBox::information(this,"Saved","Images Exported!");
+    }
+}
+
+void MainWindow::exportAsMovie()
+{
+    QFileDialog dialog(this);
+    QString path = dialog.getSaveFileName(this, "Choose a Directory to Export Images", QString());
+    if(path != "")
+    {
+        videoM->createVideo(path,fps);
+        connect(videoM,SIGNAL(videoIsReady()),this,SLOT(videoDone()));
+    }
 }
 
 void MainWindow::setImage(QString path)
@@ -425,8 +455,17 @@ void MainWindow::setImage(QString path)
     }
     img = QImage(finalPath);
     pix = pix.fromImage(img.scaled(780,475,Qt::IgnoreAspectRatio,Qt::SmoothTransformation));
-
     image->setPixmap(pix);
+
+   /* QPixmap result(pix.size());
+    result.fill(Qt::transparent);
+    QPainter painter;
+    painter.begin(&result);
+    double opa = 0.7;
+    painter.setOpacity(opa);
+    painter.drawPixmap(0, 0, pix);
+    painter.end();
+    image->setPixmap(result);*/
 }
 
 //cache l'image de fond ou la remet
@@ -461,17 +500,26 @@ void MainWindow::setVideo(QString path,QString folder,int framerate)
 
     //on attendras le signal pour changer l'image de fond
     valideFps(framerate);
+    zonePre->setFps(fps);
 }
 
 void MainWindow::setFps(int fps)
 {
-   setVideo(videoPath,projectFolder,fps);
+
+    QDir dir(videoM->getImgFolder());
+    dir.removeRecursively();
+
+
+    QDir dir2(videoM->getDesFolder());
+    dir2.removeRecursively();
+
+    setVideo(videoPath,projectFolder,fps);
 }
 
-void MainWindow::imageChanged(QString path , QString desPath)
+void MainWindow::imageChanged(QString path , QString desPath, int value)
 {
     setImage(path);
-    setDessin(desPath);
+    setDessin(desPath,value);
 }
 
 //degueulasse mais bon...
@@ -506,6 +554,28 @@ void MainWindow::valideFps(int fps)
         frequency24->setChecked(true);
     }
 }
+//ca aussi
+void MainWindow::valideLayerF(int frequency)
+{
+    if(frequency == 1)
+    {
+        layerF1->setChecked(true);
+        layerF2->setChecked(false);
+        layerF3->setChecked(false);
+
+    }else if(frequency == 2)
+    {
+        layerF1->setChecked(false);
+        layerF2->setChecked(true);
+        layerF3->setChecked(false);
+
+    }else if(fps == 3)
+    {
+        layerF1->setChecked(false);
+        layerF2->setChecked(false);
+        layerF3->setChecked(true);
+    }
+}
 
 void MainWindow::goTo6Fps()
 {
@@ -528,21 +598,89 @@ void MainWindow::goTo24Fps()
 
 }
 
+void MainWindow::goTo1LF()
+{
+    setLayerFrequency(1);
+    valideLayerF(1);
+}
+
+void MainWindow::goTo2LF()
+{
+    setLayerFrequency(2);
+    valideLayerF(2);
+}
+
+void MainWindow::goTo3LF()
+{
+    setLayerFrequency(3);
+    valideLayerF(3);
+}
+
+//slot
+void MainWindow::setLayerN(int number)
+{
+    setLayerNumber(number);
+    closeNumberL();
+}
+
+//normal
+void MainWindow::setLayerNumber(int number)
+{
+   // QMessageBox::information(this, "Draw Me Now", "number of layer change to  : " + QString::number(number));
+    layerNum = number;
+    zoneLay->setLayerNumber(number);
+    update();
+}
+
+void MainWindow::setLayerFrequency(int frequency)
+{
+  // QMessageBox::information(this, "Draw Me Now", "frequency change to:" + QString::number(frequency));
+    layerFr = frequency;
+    zoneLay->setLayerFrequency(frequency);
+    update();
+}
+
 void MainWindow::imgReady()
 {
+
     setImage(videoM->getCurrentImg());
     //on change les images de cote
     //QMessageBox::information(this, "Draw Me Now", QString::number(videoM->frameNumber()));
     zoneIm->setParam(videoM->getImgFolder(),videoM->getDesFolder(),videoM->frameNumber());
     zoneDes->loadImage(videoM->getCurrentDes());
     //zoneDes->setImgPath(videoM->getCurrentDes());
+    createLayers(videoM->getCurrentDes(),1);
+    zonePre->setImg(videoM->getDesFolder(),videoM->getImgFolder(),videoM->getCurrentDes(),1);
 }
 
-void MainWindow::setDessin(QString path)
+void MainWindow::setDessin(QString path, int value)
 {
     zoneDes->loadImage(path);
     zoneDes->setStyleSheet("background:transparent;");
     zoneDes->setAttribute(Qt::WA_TranslucentBackground);
     zoneDes->setWindowFlags(Qt::FramelessWindowHint);
     zoneDes->update();
+    createLayers(path,value);
+    zonePre->setImg(videoM->getDesFolder(),videoM->getImgFolder(),path,value);
 }
+
+void MainWindow::closeNumberL()
+{
+    layerNumber->close();
+    layerMenu->close();
+}
+
+void MainWindow::createLayers(QString desPath, int desValue)
+{
+  //  QMessageBox::information(this,"test", "dessin");
+    zoneLay->setDesFolder(videoM->getDesFolder());
+    zoneLay->setLayerFrequency(layerFr);
+    zoneLay->setLayerNumber(layerNum);
+    zoneLay->setCurrentDessin(desPath,desValue);
+}
+
+void MainWindow::videoDone()
+{
+    QMessageBox::information(this,"Video Export", "Video Exported!");
+}
+

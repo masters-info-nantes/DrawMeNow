@@ -10,7 +10,7 @@ imageDefiler::imageDefiler(QString imgfolder, QString desFolder)
     this->imgFolder = imgfolder;
     this->desFolder = desFolder;
     if((this->imgFolder != "") && (this->desFolder!=""))
-    {
+    {         ;
         modifieLayout(0);
         activeImage(1);
     }

@@ -17,6 +17,8 @@ public:
     QProcess* process;
     QProcess* process1;
     QProcess* process2;
+
+    QProcess *exportProcess;
     QString command;
     QString command1;
     QString command2;
@@ -34,12 +36,16 @@ public:
     QString goToNextImg();
     int frameNumber();
 
+    void createVideo(QString path, int fps);
+
 public slots:
 
     void imgReady();
+    void videoReady();
 
 signals:
    void firstImageReady();
+   void videoIsReady();
 };
 
 #endif // VIDEOMODULE_H

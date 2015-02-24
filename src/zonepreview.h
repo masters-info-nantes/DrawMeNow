@@ -3,6 +3,7 @@
 
 #include <QtWidgets>
 #include <QObject>
+#include <imagenmodule.h>
 
 class zonePreview : public QWidget
 {
@@ -17,6 +18,24 @@ public:
     QRadioButton *beginning;
     QCheckBox *withBg;
     QRadioButton *lastImg;
+    imageNModule *img;
+
+    QString currentDes;
+    QString imgFolder;
+    QString desFolder;
+    int desValue;
+
+    int nbLI;
+    int fps;
+
+    void setImg(QString desFolder, QString imgFolder,QString current, int value);
+    void setFps(int fps);
+
+public slots :
+    void go();
+    void click();
+    void clickLI();
+    void nbImgChange(int number);
 
 };
 

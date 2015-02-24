@@ -32,7 +32,7 @@ public slots:
     void defilerMove();
 
 signals:
-    void imageChange(QString path, QString desPath);
+    void imageChange(QString path, QString desPath, int value);
 
 
 };

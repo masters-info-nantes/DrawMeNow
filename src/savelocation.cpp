@@ -90,7 +90,7 @@ void saveLocation::setFreq(int f)
 
 void saveLocation::browse()
 {
-     savePath = QFileDialog::getOpenFileName(this,
+     savePath = QFileDialog::getExistingDirectory(this,
          tr("Choose directory"), "/home");
         loadPath->setText(savePath);
         if(loadPath->text().size() > 0)

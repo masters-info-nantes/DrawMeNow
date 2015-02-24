@@ -78,6 +78,27 @@ int videoModule::frameNumber()
 
 void videoModule::imgReady()
 {
-    emit firstImageReady();
+
+    //creation de tous les dessins
+    QImage *image = new QImage(780,475,QImage::Format_ARGB32_Premultiplied);
+    for(int i =1; i<=frameNumber();i++)
+    {
+        image->save(desFolder+ "/dessin" + QString::number(i)+ ".png");
+    }
+     emit firstImageReady();
+}
+
+void videoModule::createVideo(QString path, int fps)
+{
+    exportProcess = new QProcess();
+   // QMessageBox::information(this,"test","avconv -f image2 -i " + desFolder+ "/dessin%d.png -c:v h264 -crf 1 -r "+ QString::number(fps) + " " +path + ".mov");
+    QString command = "avconv -i " + desFolder+ "/dessin%d.png " +path + ".avi -c:v h264 -crf 1 -r "+ QString::number(fps) ;
+    exportProcess->start(command);
+    connect(exportProcess,SIGNAL(finished(int)),this,SLOT(videoReady()));
+}
+
+void videoModule::videoReady()
+{
+    emit videoIsReady();
 }
 

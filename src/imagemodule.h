@@ -11,7 +11,7 @@ class imageModule : public QWidget
 public:
     imageModule(QString path,QString desPath, int index);
 
-    QHBoxLayout *layout;
+    QGridLayout *layout;
 
     QString path;
     QString desPath;
@@ -19,8 +19,14 @@ public:
 
     QLabel *image;
     QLabel *indexL;
+    QLabel *dessin;
     QImage img;
     QPixmap pix;
+
+    QLabel *image2;
+    QImage img2;
+    QPixmap pix2;
+
 
     void setActive(bool active);
     void mousePressEvent(QMouseEvent *event);

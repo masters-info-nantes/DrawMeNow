@@ -9,6 +9,8 @@
 #include <QObject>
 #include <sizemodule.h>
 #include <videomodule.h>
+#include <layernmodule.h>
+#include <zonelayer.h>
 
 class sizeModule;
 
@@ -68,7 +70,8 @@ public:
     QAction *layerF3;
     QMenu *layerNumber;
     QWidgetAction *layerN;
-    QSpinBox *layer;
+    layerNModule *layer;
+
 
     //fond
     QMenu *bgMenu;
@@ -77,7 +80,8 @@ public:
     //--------contenu---------
     zoneDessin *zoneDes;
     zonePreview *zonePre;
-    zoneImage * zoneIm;
+    zoneImage *zoneIm;
+    zoneLayer *zoneLay;
     fondDessin *fond;
     sizeModule *chooseSize;
 
@@ -100,29 +104,44 @@ public:
     void setImage(QString path);
     void setVideo(QString path,QString folder,int framerate);
     void setFps(int fps);
-    void setDessin(QString path);
+    void setDessin(QString path, int value);
+    void setLayerNumber(int number);
+
+    void setLayerFrequency(int frequency);
 
     void valideFps(int fps);
+    void valideLayerF(int frequency);
+
+    void createLayers(QString desPath, int desValue);
 
 public slots:
 
-    void sauvegarder();
     void colorClick();
     void sizeClick();
     void undoClick();
     void redoClick();
     void rubberClick();
     void penClick();
-    void imageChanged(QString path, QString desPath);
+    void imageChanged(QString path, QString desPath, int value);
 
     void goTo6Fps();
     void goTo8Fps();
     void goTo12Fps();
     void goTo24Fps();
 
-    void exportAs();
+    void goTo1LF();
+    void goTo2LF();
+    void goTo3LF();
+
+    void setLayerN(int number);
+    void closeNumberL();
+
+    void exportAsMovie();
+    void exportAsImages();
     void hideBackground(bool checked);
+
     void imgReady();
+    void videoDone();
 };
 
 #endif // MAINWINDOW_H

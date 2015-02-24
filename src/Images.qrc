@@ -7,6 +7,9 @@
         <file>size.png</file>
         <file>undo.png</file>
         <file>Gomme.png</file>
+        <file>pause.png</file>
+        <file>play.png</file>
+        <file>close.png</file>
     </qresource>
     <qresource prefix="/Fond">
         <file>capy.jpg</file>

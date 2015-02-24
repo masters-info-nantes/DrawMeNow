@@ -100,7 +100,7 @@ void zoneImage::setCurrentFrame(int index)
 void zoneImage::imageChanged(QString path,QString desPath,int value)
 {
     fnumber->setValue(value);
-    emit imageChange(path, desPath);
+    emit imageChange(path, desPath,value);
 }
 
 void zoneImage::valueChanged(int value)
@@ -111,7 +111,7 @@ void zoneImage::valueChanged(int value)
         {area->verticalScrollBar()->setValue(value*95);}
 
     img->setCurrentImage(value);
-    emit imageChange(img->getCurrentImagePath(), img->getCurrentImageDesPath());
+    emit imageChange(img->getCurrentImagePath(), img->getCurrentImageDesPath(), value);
 }
 
 void zoneImage::defilerMove()

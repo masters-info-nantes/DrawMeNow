@@ -23,7 +23,14 @@ SOURCES += main.cpp \
     videomodule.cpp \
     imagemodule.cpp \
     fnumbermodule.cpp \
-    imagedefiler.cpp
+    imagedefiler.cpp \
+    layernmodule.cpp \
+    zonelayer.cpp \
+    previewmodule.cpp \
+    imagenmodule.cpp \
+    welcome.cpp \
+    newproject.cpp \
+    savelocation.cpp
 
 HEADERS  += \
     mainwindow.h \
@@ -36,9 +43,15 @@ HEADERS  += \
     videomodule.h \
     imagemodule.h \
     fnumbermodule.h \
-    imagedefiler.h
+    imagedefiler.h \
+    layernmodule.h \
+    zonelayer.h \
+    previewmodule.h \
+    imagenmodule.h \
+    welcome.h \
+    newproject.h \
+    savelocation.h
 
-FORMS    +=
 
 RESOURCES += \
     Images.qrc
