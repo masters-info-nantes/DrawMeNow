@@ -2,7 +2,13 @@
 
 existingProject::existingProject()
 {
-    setMinimumSize(735,250);
+    setFixedSize(735,250);
+    setWindowIcon(QIcon(":Icones/crayon.png"));
+    setWindowTitle("Project Location");
+
+    QPalette palette;
+    palette.setBrush(this->backgroundRole(), QBrush(QImage(":Fond/saveloc.png")));
+    this->setPalette(palette);
 
     layout = new QVBoxLayout(this);
      setLayout(layout);
@@ -15,6 +21,7 @@ existingProject::existingProject()
      labelChoose = new QLabel("Choose an existing project");
         labelChoose->setFont(f);
         labelChoose->setFixedSize(735,100);
+        labelChoose->setStyleSheet(" color : black;");
         labelChoose->setAlignment(Qt::AlignHCenter|Qt::AlignBottom);
         layout->addWidget(labelChoose);
 
@@ -26,6 +33,8 @@ existingProject::existingProject()
 
     browseButton = new QPushButton("Browse");
         browseButton->setFixedSize(100,25);
+        browseButton->setStyleSheet(" color : black;");
+        browseButton->setCursor(Qt::PointingHandCursor);
         layoutLoad->addWidget(browseButton,1,Qt::AlignTop|Qt::AlignLeft);
         layoutLoad->setContentsMargins(130,11,11,11);
         layout->addLayout(layoutLoad);
@@ -37,15 +46,19 @@ existingProject::existingProject()
      labelVideo = new QLabel();
         labelVideo->setFont(f2);
         labelVideo->setIndent(225);
+        labelVideo->setStyleSheet(" color : black; font : bold 12pt;");
      labelFreq = new QLabel();
         labelFreq->setFont(f2);
         labelFreq->setIndent(225);
+        labelFreq->setStyleSheet(" color : black; font : bold 12pt;");
      labelLayers = new QLabel();
         labelLayers->setFont(f2);
         labelLayers->setIndent(225);
+        labelLayers->setStyleSheet(" color : black; font : bold 12pt;");
      labelLayersFreq = new QLabel();
         labelLayersFreq->setFont(f2);
         labelLayersFreq->setIndent(225);
+        labelLayersFreq->setStyleSheet(" color : black; font : bold 12pt;");
 
        layout->addLayout(widgetFreq);
 
@@ -53,11 +66,15 @@ existingProject::existingProject()
 
      returnButton = new QPushButton("Return");
         returnButton->setFixedSize(100,25);
+        returnButton->setStyleSheet(" color : black;");
+        returnButton->setCursor(Qt::PointingHandCursor);
         layoutButton->addWidget(returnButton,1,Qt::AlignLeft);
         layout->addLayout(layoutButton);
 
       validateButton = new QPushButton("Validate");
          validateButton->setFixedSize(100,25);
+         validateButton->setCursor(Qt::PointingHandCursor);
+         validateButton->setStyleSheet(" color : black;");
 
 
     QObject::connect(browseButton, SIGNAL(clicked()), this, SLOT(browse()));
@@ -108,6 +125,7 @@ void existingProject::goMain()
 
 void existingProject::browse()
 {
+    setFocus();
      path = QFileDialog::getOpenFileName(this,
          tr("Load your project"), "/home",tr("*.dat"));
         loadPath->setText(path);
