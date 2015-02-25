@@ -14,6 +14,9 @@
     <qresource prefix="/Fond">
         <file>capy.jpg</file>
         <file>blanc.png</file>
-        <file>pell.jpg</file>
+        <file>welcome.png</file>
+        <file>new.png</file>
+        <file>new2.png</file>
+        <file>saveloc.png</file>
     </qresource>
 </RCC>

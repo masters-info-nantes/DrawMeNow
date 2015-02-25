@@ -2,7 +2,13 @@
 
 saveLocation::saveLocation()
 {
-    setMinimumSize(735,250);
+    setFixedSize(735,250);
+    setWindowIcon(QIcon(":Icones/crayon.png"));
+    setWindowTitle("Project Location");
+
+    QPalette palette;
+    palette.setBrush(this->backgroundRole(), QBrush(QImage(":Fond/saveloc.png")));
+    this->setPalette(palette);
 
     layout = new QVBoxLayout(this);
      setLayout(layout);
@@ -14,6 +20,7 @@ saveLocation::saveLocation()
      labelChoose = new QLabel("Choose your working directory");
         labelChoose->setFont(f);
         labelChoose->setFixedSize(735,100);
+        labelChoose->setStyleSheet(" color : black;");
         labelChoose->setAlignment(Qt::AlignHCenter|Qt::AlignBottom);
         layout->addWidget(labelChoose);
 
@@ -25,6 +32,7 @@ saveLocation::saveLocation()
 
     browseButton = new QPushButton("Browse");
         browseButton->setFixedSize(100,25);
+        browseButton->setStyleSheet(" color : black;");
         layoutLoad->addWidget(browseButton,1,Qt::AlignTop|Qt::AlignLeft);
         layoutLoad->setContentsMargins(130,11,11,11);
         layout->addLayout(layoutLoad);
@@ -34,11 +42,13 @@ saveLocation::saveLocation()
 
     returnButton = new QPushButton("Return");
        returnButton->setFixedSize(100,25);
+       returnButton->setStyleSheet(" color : black;");
        layoutButton->addWidget(returnButton,1,Qt::AlignLeft);
        layout->addLayout(layoutButton);
 
      validateButton = new QPushButton("Validate");
         validateButton->setFixedSize(100,25);
+        validateButton->setStyleSheet(" color : black;");
 
       QObject::connect(browseButton, SIGNAL(clicked()), this, SLOT(browse()));
       QObject::connect(returnButton, SIGNAL(clicked()), this, SLOT(goReturn()));

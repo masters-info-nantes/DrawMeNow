@@ -3,7 +3,13 @@
 
 newProject::newProject()
 {
-    setMinimumSize(735,250);
+    setFixedSize(735,250);
+    setWindowIcon(QIcon(":Icones/crayon.png"));
+    setWindowTitle("New Project");
+
+    QPalette palette;
+    palette.setBrush(this->backgroundRole(), QBrush(QImage(":Fond/new.png")));
+    this->setPalette(palette);
 
     layout = new QVBoxLayout(this);
      setLayout(layout);
@@ -13,6 +19,7 @@ newProject::newProject()
      labelChoose = new QLabel("Choose the video");
         labelChoose->setFont(f);
         labelChoose->setFixedSize(735,100);
+        labelChoose->setStyleSheet(" color : black;");
         labelChoose->setAlignment(Qt::AlignHCenter|Qt::AlignBottom);
         layout->addWidget(labelChoose);
 
@@ -26,6 +33,8 @@ newProject::newProject()
 
     browseButton = new QPushButton("Browse");
         browseButton->setFixedSize(100,25);
+        browseButton->setCursor(Qt::PointingHandCursor);
+        browseButton->setStyleSheet(" color : black;");
         layoutLoad->addWidget(browseButton,1,Qt::AlignTop|Qt::AlignLeft);
         layoutLoad->setContentsMargins(130,11,11,11);
         layout->addLayout(layoutLoad);
@@ -37,16 +46,29 @@ newProject::newProject()
 
     labelChooseFreq = new QLabel("Choose video frequency");
         labelChooseFreq->setFont(f);
-        labelChooseFreq->setFixedSize(735,100);
+        labelChooseFreq->setFixedSize(735,50);
+        labelChooseFreq->setStyleSheet(" color : black;");
         labelChooseFreq->setAlignment(Qt::AlignHCenter|Qt::AlignTop);
         labelChooseFreq->hide();
         widgetFreq->addWidget(labelChooseFreq);
 
      buttonFreq = new QButtonGroup(widgetFreq);
      button6Freq = new QRadioButton("6 img/s");
+     button6Freq->setStyleSheet(" color : black; font : 13pt");
+     button6Freq->setCursor(Qt::PointingHandCursor);
+
      button8Freq = new QRadioButton("8 img/s");
+     button8Freq->setStyleSheet(" color : black; font : 13pt");
+     button8Freq->setCursor(Qt::PointingHandCursor);
+
      button12Freq = new QRadioButton("12 img/s");
+     button12Freq->setStyleSheet(" color : black; font : 13pt");
+     button12Freq->setCursor(Qt::PointingHandCursor);
+
      button24Freq = new QRadioButton("24 img/s");
+     button24Freq->setStyleSheet(" color : black; font : 13pt");
+     button24Freq->setCursor(Qt::PointingHandCursor);
+
        buttonFreq->addButton(button6Freq);
        buttonFreq->addButton(button8Freq);
        buttonFreq->addButton(button12Freq);
@@ -58,11 +80,15 @@ newProject::newProject()
 
      returnButton = new QPushButton("Return");
         returnButton->setFixedSize(100,25);
+        returnButton->setStyleSheet(" color : black;");
+        returnButton->setCursor(Qt::PointingHandCursor);
         layoutButton->addWidget(returnButton,1,Qt::AlignLeft);
         layout->addLayout(layoutButton);
 
       validateButton = new QPushButton("Validate");
-         validateButton->setFixedSize(100,25);
+      validateButton->setFixedSize(100,25);
+      validateButton->setCursor(Qt::PointingHandCursor);
+      validateButton->setStyleSheet(" color : black;");
 
 
     QObject::connect(browseButton, SIGNAL(clicked()), this, SLOT(browse()));
@@ -135,12 +161,19 @@ void newProject::goMain()
 
 void newProject::browse()
 {
+    setFocus();
      path = QFileDialog::getOpenFileName(this,
          tr("Load Video"), "/home");
         loadPath->setText(path);
      if(loadPath->text().size() > 0 )
      {
-         labelChoose->hide();
+         setFixedSize(735,300);
+         labelChoose->setText("");
+         labelChoose->setFixedSize(735,20);
+         QPalette palette;
+         palette.setBrush(this->backgroundRole(), QBrush(QImage(":Fond/new2.png")));
+         this->setPalette(palette);
+         //labelChoose->hide();
          labelChooseFreq->show();
          widgetFreq->addWidget(button6Freq,1,Qt::AlignHCenter);
          widgetFreq->addWidget(button8Freq,1,Qt::AlignHCenter);

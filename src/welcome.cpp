@@ -8,7 +8,7 @@ welcome::welcome()
         setWindowTitle("Draw Me Now");
 
         QPalette palette;
-        palette.setBrush(this->backgroundRole(), QBrush(QImage(":Fond/pell.jpg").scaled(735,492,Qt::IgnoreAspectRatio,Qt::SmoothTransformation)));
+        palette.setBrush(this->backgroundRole(), QBrush(QImage(":Fond/welcome.png").scaled(735,492,Qt::IgnoreAspectRatio,Qt::SmoothTransformation)));
         this->setPalette(palette);
 
         setFixedSize(735,492);
@@ -50,11 +50,15 @@ welcome::welcome()
             buttonLayout->addLayout(rightButton);
 
         buttonNewProject = new QPushButton("New Project");
-        buttonOpenExisting= new QPushButton("Open existing Project");
-            buttonNewProject->setFixedSize(200,80);
-            buttonNewProject->setStyleSheet(" color : black; font:15pt");
-            buttonOpenExisting->setFixedSize(200,80);
-            buttonOpenExisting->setStyleSheet(" color : black;font:15pt");
+        buttonOpenExisting= new QPushButton("Existing Project");
+            buttonNewProject->setFixedSize(220,80);
+            buttonNewProject->setStyleSheet(" background-color:#D4D4D4;color : black; font: bold 17pt;border-style :outset; border-width: 5px;border-radius: 8px;\
+                                                border-color : black; padding: 6px;");
+            buttonNewProject->setCursor(Qt::PointingHandCursor);
+            buttonOpenExisting->setFixedSize(220,80);
+            buttonOpenExisting->setStyleSheet(" background-color:#D4D4D4;color : black; font: bold 17pt;border-style :outset; border-width: 5px;border-radius: 8px;\
+                                                border-color : black; padding: 6px;");
+            buttonOpenExisting->setCursor(Qt::PointingHandCursor);
             leftButton->addWidget(buttonNewProject);
             rightButton->addWidget(buttonOpenExisting);
           setFocus();
