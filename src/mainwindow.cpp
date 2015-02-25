@@ -2,6 +2,8 @@
 #include <QtWidgets>
 #include <QAction>
 #include <QApplication>
+#include <newproject.h>
+#include <existingproject.h>
 
 MainWindow::MainWindow()
 {
@@ -36,8 +38,12 @@ MainWindow::MainWindow()
     openNew = new QAction("New Project", this);
     openExisting = new QAction("Existing Project", this);
 
+    connect(openNew,SIGNAL(triggered(bool)),this,SLOT(openNewProject()));
+    connect(openExisting,SIGNAL(triggered(bool)),this,SLOT(openExistingProject()));
+
+
     //save
-    fileSave = new QAction("Save", this);
+    fileSave = new QAction("&Save", this);
     fileSaveAs = new QAction("Save As ...", this);
     connect(fileSave,SIGNAL(triggered(bool)),this,SLOT(save()));
     connect(fileSaveAs,SIGNAL(triggered(bool)),this,SLOT(saveAs()));
@@ -484,7 +490,7 @@ void MainWindow::hideBackground(bool checked)
 }
 
 
-void MainWindow::setVideo(QString path,QString folder,int framerate)
+void MainWindow::setVideo(QString path,QString folder,int framerate, bool newM)
 {
     videoPath = path;
     fps = framerate;
@@ -496,7 +502,7 @@ void MainWindow::setVideo(QString path,QString folder,int framerate)
     //decomposition de la video avec un message d'attente et un changement de curseur
     setCursor(Qt::WaitCursor);
 
-    videoM->buildFrame(folder);
+    videoM->buildFrame(folder,newM);
     setCursor(Qt::ArrowCursor);
 
     //on attendras le signal pour changer l'image de fond
@@ -506,7 +512,7 @@ void MainWindow::setVideo(QString path,QString folder,int framerate)
 
 void MainWindow::setFps(int fps)
 {
-
+    QMessageBox::information(this,"test","coucou");
     QDir dir(videoM->getImgFolder());
     dir.removeRecursively();
 
@@ -514,7 +520,7 @@ void MainWindow::setFps(int fps)
     QDir dir2(videoM->getDesFolder());
     dir2.removeRecursively();
 
-    setVideo(videoPath,projectFolder,fps);
+    setVideo(videoPath,projectFolder,fps,false);
 }
 
 void MainWindow::imageChanged(QString path , QString desPath, int value)
@@ -629,6 +635,7 @@ void MainWindow::setLayerNumber(int number)
 {
    // QMessageBox::information(this, "Draw Me Now", "number of layer change to  : " + QString::number(number));
     layerNum = number;
+    layer->setLayerNumber(number-1);
     zoneLay->setLayerNumber(number);
     update();
 }
@@ -676,7 +683,7 @@ void MainWindow::createLayers(QString desPath, int desValue)
   //  QMessageBox::information(this,"test", "dessin");
     zoneLay->setDesFolder(videoM->getDesFolder());
     zoneLay->setLayerFrequency(layerFr);
-    zoneLay->setLayerNumber(layerNum);
+    zoneLay->setLayerNumber(layerNum );
     zoneLay->setCurrentDessin(desPath,desValue);
 }
 
@@ -701,7 +708,7 @@ void MainWindow::save()
      out << QString(videoM->imgFolder);
      out << QString(videoPath);
      out << (qint32)fps;
-     out << (qint32)layerNum;
+     out << (qint32)(layerNum);
      out << (qint32)layerFr;
 
 }
@@ -727,4 +734,16 @@ void MainWindow::saveAs()
            out << (qint32)layerNum;
            out << (qint32)layerFr;
        }
+}
+
+void MainWindow::openNewProject()
+{
+    newProject *newPro = new newProject();
+    this->close();
+}
+
+void MainWindow::openExistingProject()
+{
+    existingProject *exPro = new existingProject();
+    this->close();
 }

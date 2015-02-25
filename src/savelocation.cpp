@@ -65,7 +65,7 @@ void saveLocation::goMain()
     if(loadPath->text().size() > 0)
     {
          MainWindow *window = new MainWindow;
-            window->setVideo(videoPath,loadPath->text(),freq);
+            window->setVideo(videoPath,loadPath->text(),freq,true);
           this->~saveLocation();
     }
     else

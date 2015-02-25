@@ -10,7 +10,7 @@ videoModule::videoModule(QString video, int framerate)
     process = new QProcess();
 }
 
-void videoModule::buildFrame(QString folder)
+void videoModule::buildFrame(QString folder, bool newM)
 {
     desFolder = QString(folder+"/dessins");
     imgFolder = QString(folder+"/images");
@@ -19,17 +19,20 @@ void videoModule::buildFrame(QString folder)
 
    // QDir dir(folder +"/images");
    // dir.removeRecursively();
+    this->newM = newM;
+    if(newM)
+    {  // QMessageBox::information(this,"test", "nouveau");
+        //creation du dossier images
+        process1 = new QProcess();
+        command1 = "mkdir " +folder +"/images";
+        process1->start(command1);
 
-    //creation du dossier images
-    process1 = new QProcess();
-    command1 = "mkdir " +folder +"/images";
-    process1->start(command1);
+        //creation du dossier dessins
 
-    //creation du dossier dessins
-
-    process2 = new QProcess();
-    command2 = "mkdir " +folder +"/dessins";
-    process2->start(command2);
+        process2 = new QProcess();
+        command2 = "mkdir " +folder +"/dessins";
+        process2->start(command2);
+    }
 
     //creation des images
 
@@ -83,11 +86,14 @@ void videoModule::imgReady()
 {
 
     //creation de tous les dessins
-    QImage *image = new QImage(780,475,QImage::Format_ARGB32_Premultiplied);
-    for(int i =1; i<=frameNumber();i++)
+    if(newM)
     {
-        image->save(desFolder+ "/dessin" + QString::number(i)+ ".png");
-    }
+        QImage *image = new QImage(780,475,QImage::Format_ARGB32_Premultiplied);
+        for(int i =1; i<=frameNumber();i++)
+        {
+            image->save(desFolder+ "/dessin" + QString::number(i)+ ".png");
+        }
+     }
      emit firstImageReady();
 }
 

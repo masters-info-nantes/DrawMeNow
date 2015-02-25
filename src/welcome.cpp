@@ -4,9 +4,17 @@
 welcome::welcome()
 {
 
+        setWindowIcon(QIcon(":Icones/crayon.png"));
+        setWindowTitle("Draw Me Now");
+
+        QPalette palette;
+        palette.setBrush(this->backgroundRole(), QBrush(QImage(":Fond/pell.jpg").scaled(735,492,Qt::IgnoreAspectRatio,Qt::SmoothTransformation)));
+        this->setPalette(palette);
+
         setFixedSize(735,492);
 
         QFont f( "Arial", 50, QFont::Bold);
+
         layout = new QVBoxLayout(this);
         setLayout(layout);
 
@@ -15,6 +23,7 @@ welcome::welcome()
         labelWelcome = new QLabel();
             labelWelcome->setText("Welcome to");
             labelWelcome->setFixedSize(735,120);
+            labelWelcome->setStyleSheet(" color : black;");
             labelWelcome->setFont(f);
             labelWelcome->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
             layout->addWidget(labelWelcome);
@@ -22,6 +31,7 @@ welcome::welcome()
        labelTitle = new QLabel();
             labelTitle->setText("Draw Me Now !");
             labelTitle->setFixedSize(735,120);
+            labelTitle->setStyleSheet(" color : black;");
             labelTitle->setFont(f);
             labelTitle->setAlignment(Qt::AlignCenter);
             layout->addWidget(labelTitle);
@@ -41,10 +51,13 @@ welcome::welcome()
 
         buttonNewProject = new QPushButton("New Project");
         buttonOpenExisting= new QPushButton("Open existing Project");
-            buttonNewProject->setFixedSize(150,50);
-            buttonOpenExisting->setFixedSize(150,50);
+            buttonNewProject->setFixedSize(200,80);
+            buttonNewProject->setStyleSheet(" color : black; font:15pt");
+            buttonOpenExisting->setFixedSize(200,80);
+            buttonOpenExisting->setStyleSheet(" color : black;font:15pt");
             leftButton->addWidget(buttonNewProject);
             rightButton->addWidget(buttonOpenExisting);
+          setFocus();
 
          QObject::connect(buttonNewProject, SIGNAL(clicked()), this, SLOT(goNewProject()));
          QObject::connect(buttonOpenExisting, SIGNAL(clicked()), this, SLOT(goExistingProject()));

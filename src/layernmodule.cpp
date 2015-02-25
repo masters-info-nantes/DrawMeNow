@@ -36,6 +36,12 @@ void layerNModule::validate()
 {
     emit numberLChanged(number->value() +1);
 }
+
+void layerNModule::setLayerNumber(int num)
+{
+    number->setValue(num);
+}
+
 /*
 void layerNModule::canceled()
 {

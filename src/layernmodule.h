@@ -18,6 +18,9 @@ public:
     QPushButton *ok;
     QPushButton *cancel;
 
+
+    void setLayerNumber(int num);
+
 public slots:
     void validate();
   //  void canceled();

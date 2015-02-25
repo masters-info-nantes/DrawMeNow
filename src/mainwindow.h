@@ -102,7 +102,7 @@ public:
 
     void setPenSize(int size);
     void setImage(QString path);
-    void setVideo(QString path,QString folder,int framerate);
+    void setVideo(QString path, QString folder, int framerate, bool newM);
     void setFps(int fps);
     void setDessin(QString path, int value);
     void setLayerNumber(int number);
@@ -145,6 +145,8 @@ public slots:
 
     void save();
     void saveAs();
+    void openNewProject();
+    void openExistingProject();
 };
 
 #endif // MAINWINDOW_H

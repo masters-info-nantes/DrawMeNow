@@ -97,8 +97,10 @@ void existingProject::goMain()
     {
         projectFolder += desFolder.at(i);
     }
-    QMessageBox::information(this, "Draw Me Now", projectFolder);
-    w->setVideo(videoPath,projectFolder,freq);
+   // QMessageBox::information(this, "Draw Me Now", projectFolder);
+    w->setVideo(videoPath,projectFolder,freq,false);
+    w->setLayerFrequency(layersFreq);
+    w->setLayerNumber(layers);
     this->~existingProject();
 
 }
@@ -125,9 +127,9 @@ void existingProject::browse()
           }
          labelChoose->hide();
          labelVideo->setText("Video Name : " + videoName);
-         labelFreq->setText("Frequency : " + QString::number(freq));
-         labelLayers->setText("Layers : " + QString::number(layers));
-         labelLayersFreq->setText("Layer Frequency : " + QString::number(layersFreq));
+         labelFreq->setText("Frequency : " + QString::number(freq) +" fps");
+         labelLayers->setText("Layers : " + QString::number(layers -1));
+         labelLayersFreq->setText("Layer Frequency : 1/" + QString::number(layersFreq));
          widgetFreq->addWidget(labelVideo);
          widgetFreq->addWidget(labelFreq);
          widgetFreq->addWidget(labelLayers);

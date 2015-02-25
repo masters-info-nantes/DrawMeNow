@@ -13,6 +13,7 @@ public:
 
     int index;
     int framerate;
+    bool newM;
     QString video;
     QProcess* process;
     QProcess* process1;
@@ -28,7 +29,7 @@ public:
     QString currentImg;
     QString currentDes;
 
-    void buildFrame(QString folder);
+    void buildFrame(QString folder, bool newM);
     QString getImgFolder();
     QString getDesFolder();
     QString getCurrentImg();
