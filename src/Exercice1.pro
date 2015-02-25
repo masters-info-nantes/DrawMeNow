@@ -30,7 +30,8 @@ SOURCES += main.cpp \
     imagenmodule.cpp \
     welcome.cpp \
     newproject.cpp \
-    savelocation.cpp
+    savelocation.cpp \
+    existingproject.cpp
 
 HEADERS  += \
     mainwindow.h \
@@ -50,7 +51,8 @@ HEADERS  += \
     imagenmodule.h \
     welcome.h \
     newproject.h \
-    savelocation.h
+    savelocation.h \
+    existingproject.h
 
 
 RESOURCES += \

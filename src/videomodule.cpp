@@ -17,6 +17,9 @@ void videoModule::buildFrame(QString folder)
     currentImg = QString(imgFolder + "/image1.jpg");
     currentDes = QString(desFolder + "/dessin1.png");
 
+   // QDir dir(folder +"/images");
+   // dir.removeRecursively();
+
     //creation du dossier images
     process1 = new QProcess();
     command1 = "mkdir " +folder +"/images";
@@ -90,11 +93,34 @@ void videoModule::imgReady()
 
 void videoModule::createVideo(QString path, int fps)
 {
+    //creation d un dossier d'image temporaire
+   QDir dir(desFolder + "/DessinTemp");
+    dir.mkpath(desFolder + "/DessinTemp");
+
+    for(int i=1;i<=frameNumber();i++)
+    {
+        QImage image1 =QImage(780,475,QImage::Format_ARGB32_Premultiplied);
+        image1.fill(Qt::white);
+
+        QImage image2 = QImage(desFolder + "/dessin" + QString::number(i) +".png");
+        QPixmap pix = pix.fromImage(image2);
+        QPainter painter(&image1);
+        painter.drawPixmap(0,0,pix);
+        painter.end();
+
+        image1.save(desFolder + "/DessinTemp/dessin" + QString::number(i) + ".png");
+    }
+
+
     exportProcess = new QProcess();
    // QMessageBox::information(this,"test","avconv -f image2 -i " + desFolder+ "/dessin%d.png -c:v h264 -crf 1 -r "+ QString::number(fps) + " " +path + ".mov");
-    QString command = "avconv -i " + desFolder+ "/dessin%d.png " +path + ".avi -c:v h264 -crf 1 -r "+ QString::number(fps) ;
+    QString command = "avconv -f image2 -framerate "+ QString::number(fps)+" -i " + desFolder+ "/DessinTemp/dessin%d.png -vcodec mpeg4 -r " +QString::number(fps)+" " +path + ".mp4";
+
     exportProcess->start(command);
     connect(exportProcess,SIGNAL(finished(int)),this,SLOT(videoReady()));
+
+
+
 }
 
 void videoModule::videoReady()

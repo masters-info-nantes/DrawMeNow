@@ -16,6 +16,8 @@ newProject::newProject()
         labelChoose->setAlignment(Qt::AlignHCenter|Qt::AlignBottom);
         layout->addWidget(labelChoose);
 
+        //Chemin et bouton pour choisir la video a charger
+
     layoutLoad = new QHBoxLayout;
     loadPath = new QLineEdit();
         loadPath->setFixedSize(200,25);
@@ -28,8 +30,10 @@ newProject::newProject()
         layoutLoad->setContentsMargins(130,11,11,11);
         layout->addLayout(layoutLoad);
 
-        widgetFreq = new QVBoxLayout();
 
+        //Une fois la video choisie apparition du choix de la frequence et du bouton valider
+
+    widgetFreq = new QVBoxLayout();
 
     labelChooseFreq = new QLabel("Choose video frequency");
         labelChooseFreq->setFont(f);

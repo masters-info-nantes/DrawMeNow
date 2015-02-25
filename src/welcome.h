@@ -5,6 +5,7 @@
 #include<QObject>
 #include<QApplication>
 #include "newproject.h"
+#include "existingproject.h"
 class welcome : public QWidget
 {
     Q_OBJECT
@@ -14,6 +15,7 @@ public:
 
 public slots:
     void goNewProject();
+    void goExistingProject();
 
 private :
      QWidget *window;

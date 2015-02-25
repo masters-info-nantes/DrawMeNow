@@ -9,6 +9,8 @@ saveLocation::saveLocation()
 
     QFont f( "Arial", 25, QFont::Bold);
 
+    //Choix d'un repertoire qui contiendra le projet
+
      labelChoose = new QLabel("Choose your working directory");
         labelChoose->setFont(f);
         labelChoose->setFixedSize(735,100);
@@ -64,6 +66,7 @@ void saveLocation::goMain()
     {
          MainWindow *window = new MainWindow;
             window->setVideo(videoPath,loadPath->text(),freq);
+          this->~saveLocation();
     }
     else
     {

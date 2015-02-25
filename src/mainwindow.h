@@ -142,6 +142,9 @@ public slots:
 
     void imgReady();
     void videoDone();
+
+    void save();
+    void saveAs();
 };
 
 #endif // MAINWINDOW_H

@@ -10,6 +10,8 @@ welcome::welcome()
         layout = new QVBoxLayout(this);
         setLayout(layout);
 
+        //Titre de l'application
+
         labelWelcome = new QLabel();
             labelWelcome->setText("Welcome to");
             labelWelcome->setFixedSize(735,120);
@@ -23,6 +25,9 @@ welcome::welcome()
             labelTitle->setFont(f);
             labelTitle->setAlignment(Qt::AlignCenter);
             layout->addWidget(labelTitle);
+
+
+          //Boutons pour creer/ouvrir un projet
 
         buttonLayout = new QHBoxLayout();
             layout->addLayout(buttonLayout);
@@ -42,6 +47,7 @@ welcome::welcome()
             rightButton->addWidget(buttonOpenExisting);
 
          QObject::connect(buttonNewProject, SIGNAL(clicked()), this, SLOT(goNewProject()));
+         QObject::connect(buttonOpenExisting, SIGNAL(clicked()), this, SLOT(goExistingProject()));
 
          //au milieu!
          QDesktopWidget *widget = QApplication::desktop();
@@ -63,4 +69,10 @@ void welcome::goNewProject()
     newProject *newpro = new newProject();
     this->~welcome();
 
+}
+
+void welcome::goExistingProject()
+{
+    existingProject *expro = new existingProject();
+    this->~welcome();
 }

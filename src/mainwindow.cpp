@@ -39,7 +39,8 @@ MainWindow::MainWindow()
     //save
     fileSave = new QAction("Save", this);
     fileSaveAs = new QAction("Save As ...", this);
-
+    connect(fileSave,SIGNAL(triggered(bool)),this,SLOT(save()));
+    connect(fileSaveAs,SIGNAL(triggered(bool)),this,SLOT(saveAs()));
 
     //export
     exportMovie = new QAction("Movie", this);
@@ -682,5 +683,48 @@ void MainWindow::createLayers(QString desPath, int desValue)
 void MainWindow::videoDone()
 {
     QMessageBox::information(this,"Video Export", "Video Exported!");
+    QDir dir = QDir(videoM->getDesFolder() + "/DessinTemp");
+    dir.removeRecursively();
 }
 
+void MainWindow::save()
+{
+     QString fileName;
+     for(int i = projectFolder.lastIndexOf("/")+1;i<projectFolder.size();i++)
+     {
+         fileName += projectFolder.at(i);
+     }
+     QFile file(projectFolder+"/"+ fileName+".dat");
+     file.open(QIODevice::WriteOnly);
+     QDataStream out(&file);
+     out << QString(videoM->desFolder);
+     out << QString(videoM->imgFolder);
+     out << QString(videoPath);
+     out << (qint32)fps;
+     out << (qint32)layerNum;
+     out << (qint32)layerFr;
+
+}
+
+void MainWindow::saveAs()
+{
+        QString savePath = QFileDialog::getExistingDirectory(this,
+        tr("Choose directory"), "/home");
+        QString fileName;
+        for(int i = savePath.lastIndexOf("/")+1;i<savePath.size();i++)
+        {
+            fileName += savePath.at(i);
+        }
+       if(savePath.size() > 0)
+       {
+           QFile file(savePath+"/"+ fileName+".dat");
+           file.open(QIODevice::WriteOnly);
+           QDataStream out(&file);
+           out << QString(videoM->desFolder);
+           out << QString(videoM->imgFolder);
+           out << QString(videoPath);
+           out << (qint32)fps;
+           out << (qint32)layerNum;
+           out << (qint32)layerFr;
+       }
+}
