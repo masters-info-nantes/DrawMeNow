@@ -71,6 +71,16 @@ previewModule::previewModule(QString desFolder, QString imgFolder,QString desPat
     //fonction
     connect(pause, SIGNAL(clicked()),this,SLOT(pauseVideo()));
 
+    stop = new QPushButton("");
+    //style
+    stop->setIcon(QIcon(":Icones/stop.png"));
+    stop->setIconSize(QSize(80,80));
+    stop->setFixedSize(80,80);
+    stop->setStyleSheet("QPushButton{border: none;outline: none;}");
+    stop->setCursor(Qt::PointingHandCursor);
+    //fonction
+    connect(stop, SIGNAL(clicked()),this,SLOT(stopVideo()));
+
     quit = new QPushButton("Close");
     quit->setIcon(QIcon(":Icones/close.png"));
     quit->setCursor(Qt::PointingHandCursor);
@@ -79,7 +89,7 @@ previewModule::previewModule(QString desFolder, QString imgFolder,QString desPat
     connect(quit, SIGNAL(clicked()),this,SLOT(closePreview()));
 
 
-
+    buttonLayout->addWidget(stop);
     buttonLayout->addWidget(play,2,Qt::AlignRight);
     buttonLayout->addWidget(pause,2,Qt::AlignCenter);
 
@@ -138,7 +148,6 @@ void previewModule::playVideo()
                 {ind = 1;}
         }
         timer = new QTimer();
-        //le timer appeleras la fonction goToNextGeneration
         timer->connect(timer, SIGNAL(timeout()),this, SLOT(nextImg()));
         double interv = 1.0/fps * 1000.0;
 
@@ -208,4 +217,10 @@ void previewModule::nextImg()
 void previewModule::closePreview()
 {
     this->close();
+}
+
+void previewModule::stopVideo()
+{
+    timer->stop();
+    ind = 0;
 }

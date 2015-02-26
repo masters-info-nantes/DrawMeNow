@@ -10,6 +10,7 @@
         <file>play.png</file>
         <file>close.png</file>
         <file>crayon.png</file>
+        <file>stop.png</file>
     </qresource>
     <qresource prefix="/Fond">
         <file>capy.jpg</file>

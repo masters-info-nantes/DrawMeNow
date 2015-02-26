@@ -34,6 +34,7 @@ public:
     QPushButton *play;
     QPushButton *pause;
     QPushButton *quit;
+    QPushButton *stop;
 
     QTimer *timer;
 
@@ -54,6 +55,7 @@ public slots:
     void pauseVideo();
     void closePreview();
     void nextImg();
+    void stopVideo();
 
 };
 
