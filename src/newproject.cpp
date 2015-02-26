@@ -152,8 +152,9 @@ void newProject::goMain()
     else
     {
          QMessageBox msgBox;
-         msgBox.setText("Select a frequency");
-         msgBox.exec();
+         msgBox.warning(this,"Attention","Select a frequency");
+       //  msgBox.exec();
+         setFocus();
     }
 }
 
@@ -163,7 +164,7 @@ void newProject::browse()
 {
     setFocus();
      path = QFileDialog::getOpenFileName(this,
-         tr("Load Video"), "/home");
+         tr("Load Video"), "/home",tr("Video Files(*.3gp *.mp4 *.avi *.mov *.mkv)"));
         loadPath->setText(path);
      if(loadPath->text().size() > 0 )
      {

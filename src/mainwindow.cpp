@@ -54,6 +54,12 @@ MainWindow::MainWindow()
     exportImage = new QAction("Images", this);
     connect(exportImage,SIGNAL(triggered(bool)),this,SLOT(exportAsImages()));
 
+    //quitter
+    quit = new QAction("&Quit",this);
+    quit->setShortcutContext(Qt::WindowShortcut);
+    quit->setShortcut(Qt::CTRL+Qt::Key_Q);
+    connect(quit,SIGNAL(triggered(bool)),this,SLOT(quitter()));
+
    //----menu frequency actions-----
 
     frequency6 = new QAction("6 fps", this);
@@ -98,6 +104,9 @@ MainWindow::MainWindow()
     fileExportAs =  fileMenu->addMenu("Export As ...");
     fileExportAs->addAction(exportMovie);
     fileExportAs->addAction(exportImage);
+
+    //quit
+    fileMenu->addAction(quit);
 
     menuBar()->addSeparator();
 
@@ -746,4 +755,29 @@ void MainWindow::openExistingProject()
 {
     existingProject *exPro = new existingProject();
     this->close();
+}
+
+void MainWindow::quitter()
+{
+    QMessageBox msgBox;
+    msgBox.setText("You're about to quit the application");
+    msgBox.setInformativeText("Do you want to save your project?");
+    msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+    msgBox.setDefaultButton(QMessageBox::Save);
+    int ret = msgBox.exec();
+    switch (ret) {
+       case QMessageBox::Save:
+           save();
+           qApp->quit();
+           break;
+       case QMessageBox::Discard:
+           qApp->quit();
+           break;
+       case QMessageBox::Cancel:
+
+           break;
+       default:
+           // should never be reached
+           break;
+     }
 }

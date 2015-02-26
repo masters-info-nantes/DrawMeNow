@@ -48,6 +48,7 @@ public:
     QMenu *fileExportAs;
     QAction *exportMovie;
     QAction *exportImage;
+    QAction *quit;
 
     //frequency
     QMenu *frequencyMenu;
@@ -147,6 +148,8 @@ public slots:
     void saveAs();
     void openNewProject();
     void openExistingProject();
+
+    void quitter();
 };
 
 #endif // MAINWINDOW_H
