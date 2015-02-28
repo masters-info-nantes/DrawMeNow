@@ -52,11 +52,14 @@ welcome::welcome()
         buttonNewProject = new QPushButton("New Project");
         buttonOpenExisting= new QPushButton("Existing Project");
             buttonNewProject->setFixedSize(220,80);
-            buttonNewProject->setStyleSheet(" background-color:#D4D4D4;color : black; font: bold 17pt;border-style :outset; border-width: 5px;border-radius: 8px;\
+            buttonNewProject->setToolTip("Createa new project");
+            buttonNewProject->setStyleSheet(" background-color:#D4D4D4;color : black; font: bold 17pt;border-style :outset; border-width: 3px;border-radius: 8px;\
                                                 border-color : black; padding: 6px;");
             buttonNewProject->setCursor(Qt::PointingHandCursor);
+
             buttonOpenExisting->setFixedSize(220,80);
-            buttonOpenExisting->setStyleSheet(" background-color:#D4D4D4;color : black; font: bold 17pt;border-style :outset; border-width: 5px;border-radius: 8px;\
+            buttonOpenExisting->setToolTip("Open an existing project");
+            buttonOpenExisting->setStyleSheet(" background-color:#D4D4D4;color : black; font: bold 17pt;border-style :outset; border-width: 3px;border-radius: 8px;\
                                                 border-color : black; padding: 6px;");
             buttonOpenExisting->setCursor(Qt::PointingHandCursor);
             leftButton->addWidget(buttonNewProject);

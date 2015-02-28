@@ -65,10 +65,13 @@ zonePreview::zonePreview()
     layout->addWidget(withBg,0,2,2,1);
 
     preview = new QPushButton("Preview");
+    preview->setToolTip("click here to see the video you are creating");
     connect(preview,SIGNAL(clicked()),this,SLOT(go()));
     connect(preview,SIGNAL(clicked()),this,SLOT(click()));
     //style
-    preview->setStyleSheet("border-color: black; color : black; font: 15pt; ");
+    //    preview->setStyleSheet("border-color: black; color : black; font: bold 15pt; border-style :outset; border-radius : 3px;border-width: 3px; background-color: white");
+
+    preview->setStyleSheet("border-color: black; color : black; font: bold 15pt; ");
     preview->setCursor(Qt::PointingHandCursor);
     layout->addWidget(preview,0,3,2,1);
     QSizePolicy spInfo5(QSizePolicy::Preferred, QSizePolicy::Preferred);

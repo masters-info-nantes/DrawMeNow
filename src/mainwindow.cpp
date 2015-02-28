@@ -44,6 +44,8 @@ MainWindow::MainWindow()
 
     //save
     fileSave = new QAction("&Save", this);
+    fileSave->setShortcutContext(Qt::WindowShortcut);
+    fileSave->setShortcut(Qt::CTRL+Qt::Key_S);
     fileSaveAs = new QAction("Save As ...", this);
     connect(fileSave,SIGNAL(triggered(bool)),this,SLOT(save()));
     connect(fileSaveAs,SIGNAL(triggered(bool)),this,SLOT(saveAs()));
@@ -174,6 +176,7 @@ MainWindow::MainWindow()
     backgButton = new QCheckBox("Hide background",this);
     backgButton->setTristate(false);
     backgButton->setCursor(Qt::PointingHandCursor);
+    backgButton->setToolTip("Hide the image you are drawing on");
     connect(backgButton, SIGNAL(clicked(bool)), this, SLOT(hideBackground(bool)));
 
     //pour eviter que le focus soit sur la checkbox
@@ -202,6 +205,7 @@ MainWindow::MainWindow()
     buttonRubber->setIcon(QIcon(":Icones/Gomme.png"));
     buttonRubber->setChecked(true);
     buttonRubber->setCursor(Qt::PointingHandCursor);
+    buttonRubber->setToolTip("Eraser");
     toolBar->addWidget(buttonRubber);
     connect(buttonRubber, SIGNAL(clicked()), this, SLOT(rubberClick()));
 
@@ -214,6 +218,7 @@ MainWindow::MainWindow()
     buttonPen->setIcon(QIcon(":Icones/crayon.png"));
     buttonPen->setChecked(true);
     buttonPen->setCursor(Qt::PointingHandCursor);
+    buttonPen->setToolTip("Pen");
     toolBar->addWidget(buttonPen);
     buttonPen->setStyleSheet(" border-style: inset;\
                              border-width: 2px;\
@@ -231,6 +236,7 @@ MainWindow::MainWindow()
     buttonColor = new QToolButton();
     buttonColor->setCursor(Qt::PointingHandCursor);
     buttonColor->setStyleSheet("background-color : #000000; border-radius: 5px;");
+    buttonColor->setToolTip("change the color of the pen");
     toolBar->addWidget(buttonColor);
     connect(buttonColor, SIGNAL(clicked()), this, SLOT(colorClick()));
 
@@ -243,6 +249,7 @@ MainWindow::MainWindow()
     buttonSize = new QToolButton();
     buttonSize->setCursor(Qt::PointingHandCursor);
     buttonSize->setIcon(QIcon(":Icones/size.png"));
+    buttonSize->setToolTip("change the size of the pen or eraser");
     toolBar->addWidget(buttonSize);
     connect(buttonSize, SIGNAL(clicked()), this, SLOT(sizeClick()));
   /*  actionSize = new QAction("size", this);
@@ -260,7 +267,7 @@ MainWindow::MainWindow()
 
 
     //espace
-    QLabel *lab7 = new QLabel("                ");
+    QLabel *lab7 = new QLabel("                    ");
     toolBar->addWidget(lab7);
 
     //------Undo---------
@@ -269,6 +276,7 @@ MainWindow::MainWindow()
     buttonUndo->setCursor(Qt::PointingHandCursor);
     buttonUndo->setIcon(QIcon(":Icones/undo.png"));
     buttonUndo->setShortcut(QKeySequence("Ctrl+Z"));
+    buttonUndo->setToolTip("cancels the previous action");
     toolBar->addWidget(buttonUndo);
     connect(buttonUndo, SIGNAL(clicked()), this, SLOT(undoClick()));
 
@@ -282,6 +290,7 @@ MainWindow::MainWindow()
     buttonRedo->setCursor(Qt::PointingHandCursor);
     buttonRedo->setIcon(QIcon(":Icones/redo.png"));
     buttonRedo->setShortcut(QKeySequence("Ctrl+R"));
+    buttonRedo->setToolTip("replay last canceled action");
     toolBar->addWidget(buttonRedo);
     connect(buttonRedo, SIGNAL(clicked()), this, SLOT(redoClick()));
 
@@ -521,7 +530,7 @@ void MainWindow::setVideo(QString path,QString folder,int framerate, bool newM)
 
 void MainWindow::setFps(int fps)
 {
-    QMessageBox::information(this,"test","coucou");
+   // QMessageBox::information(this,"test","coucou");
     QDir dir(videoM->getImgFolder());
     dir.removeRecursively();
 
@@ -529,7 +538,7 @@ void MainWindow::setFps(int fps)
     QDir dir2(videoM->getDesFolder());
     dir2.removeRecursively();
 
-    setVideo(videoPath,projectFolder,fps,false);
+    setVideo(videoPath,projectFolder,fps,true);
 }
 
 void MainWindow::imageChanged(QString path , QString desPath, int value)
@@ -585,7 +594,7 @@ void MainWindow::valideLayerF(int frequency)
         layerF2->setChecked(true);
         layerF3->setChecked(false);
 
-    }else if(fps == 3)
+    }else if(frequency == 3)
     {
         layerF1->setChecked(false);
         layerF2->setChecked(false);
@@ -595,23 +604,90 @@ void MainWindow::valideLayerF(int frequency)
 
 void MainWindow::goTo6Fps()
 {
-    setFps(6);
+    QMessageBox msgBox;
+    msgBox.setText("You're about to change the fps,it will erase your project");
+    msgBox.setInformativeText("Do you want to continue?");
+    msgBox.setStandardButtons(QMessageBox::Yes| QMessageBox::Cancel);
+    msgBox.setDefaultButton(QMessageBox::Yes);
+    int ret = msgBox.exec();
+    switch (ret) {
+       case QMessageBox::Yes:
+                setFps(6);
+           break;
+       case QMessageBox::Cancel:
+            frequency6->setChecked(false);
+
+           break;
+       default:
+           // should never be reached
+           break;
+     }
+
 }
 
 void MainWindow::goTo8Fps()
 {
-    setFps(8);
+    QMessageBox msgBox;
+    msgBox.setText("You're about to change the fps,it will erase your project");
+    msgBox.setInformativeText("Do you want to continue?");
+    msgBox.setStandardButtons(QMessageBox::Yes| QMessageBox::Cancel);
+    msgBox.setDefaultButton(QMessageBox::Yes);
+    int ret = msgBox.exec();
+    switch (ret) {
+       case QMessageBox::Yes:
+                setFps(8);
+           break;
+       case QMessageBox::Cancel:
+            frequency8->setChecked(false);
+
+           break;
+       default:
+           // should never be reached
+           break;
+     }
 }
 
 void MainWindow::goTo12Fps()
 {
-    setFps(12);
+    QMessageBox msgBox;
+    msgBox.setText("You're about to change the fps,it will create erase your project");
+    msgBox.setInformativeText("Do you want to continue?");
+    msgBox.setStandardButtons(QMessageBox::Yes| QMessageBox::Cancel);
+    msgBox.setDefaultButton(QMessageBox::Yes);
+    int ret = msgBox.exec();
+    switch (ret) {
+       case QMessageBox::Yes:
+                setFps(12);
+           break;
+       case QMessageBox::Cancel:
+            frequency12->setChecked(false);
+
+           break;
+       default:
+           // should never be reached
+           break;
+     }
 }
 
 void MainWindow::goTo24Fps()
 {
-    setFps(24);
-
+    QMessageBox msgBox;
+    msgBox.setText("You're about to change the fps,it will erase your project");
+    msgBox.setInformativeText("Do you want to continue?");
+    msgBox.setStandardButtons(QMessageBox::Yes| QMessageBox::Cancel);
+    msgBox.setDefaultButton(QMessageBox::Yes);
+    int ret = msgBox.exec();
+    switch (ret) {
+       case QMessageBox::Yes:
+                setFps(24);
+           break;
+       case QMessageBox::Cancel:
+            frequency24->setChecked(false);
+           break;
+       default:
+           // should never be reached
+           break;
+     }
 }
 
 void MainWindow::goTo1LF()
@@ -720,6 +796,8 @@ void MainWindow::save()
      out << (qint32)(layerNum);
      out << (qint32)layerFr;
 
+     QMessageBox::information(this,"Save","Project saved!");
+
 }
 
 void MainWindow::saveAs()
@@ -743,6 +821,8 @@ void MainWindow::saveAs()
            out << (qint32)layerNum;
            out << (qint32)layerFr;
        }
+
+       QMessageBox::information(this,"Save As...","Project saved!");
 }
 
 void MainWindow::openNewProject()
