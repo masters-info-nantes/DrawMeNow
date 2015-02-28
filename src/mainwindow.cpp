@@ -220,10 +220,10 @@ MainWindow::MainWindow()
     buttonPen->setCursor(Qt::PointingHandCursor);
     buttonPen->setToolTip("Pen");
     toolBar->addWidget(buttonPen);
-    buttonPen->setStyleSheet(" border-style: inset;\
+    buttonPen->setStyleSheet("QToolButton{ border-style: inset;\
                              border-width: 2px;\
                              border-radius: 5px;\
-                             border-color: black;");
+                             border-color: black;}");
     connect(buttonPen, SIGNAL(clicked()), this, SLOT(penClick()));
 
 
@@ -409,10 +409,10 @@ void MainWindow::rubberClick()
 {
     zoneDes->setRubber(true);
     zoneDes->setCursor(Qt::ClosedHandCursor);
-    buttonRubber->setStyleSheet(" border-style: inset;\
+    buttonRubber->setStyleSheet(" QToolButton{border-style: inset;\
                                 border-width: 2px;\
                                 border-radius: 5px;\
-                                border-color: black;");
+                                border-color: black;}");
     buttonPen->setStyleSheet(";");
 }
 
@@ -420,10 +420,10 @@ void MainWindow::penClick()
 {
     zoneDes->setRubber(false);
     zoneDes->setCursor(Qt::CrossCursor);
-    buttonPen->setStyleSheet(" border-style: inset;\
+    buttonPen->setStyleSheet(" QToolButton{border-style: inset;\
                              border-width: 2px;\
                              border-radius: 5px;\
-                             border-color: black;");
+                             border-color: black;}");
     buttonRubber->setStyleSheet(";");
 }
 
@@ -827,14 +827,48 @@ void MainWindow::saveAs()
 
 void MainWindow::openNewProject()
 {
-    newProject *newPro = new newProject();
-    this->close();
+    QMessageBox msgBox;
+    msgBox.setText("Open a new project will quit the one you are working on");
+    msgBox.setInformativeText("Do you want to continue?");
+    msgBox.setStandardButtons(QMessageBox::Yes| QMessageBox::Cancel);
+    msgBox.setDefaultButton(QMessageBox::Yes);
+    int ret = msgBox.exec();
+    switch (ret) {
+       case QMessageBox::Yes:
+    {newProject *newPro = new newProject();
+        this->close();}
+           break;
+    case QMessageBox::Cancel:
+
+        break;
+       default:
+           // should never be reached
+           break;
+     }
+
 }
 
 void MainWindow::openExistingProject()
 {
-    existingProject *exPro = new existingProject();
-    this->close();
+    QMessageBox msgBox;
+    msgBox.setText("Open an existing project will quit the one you are working on");
+    msgBox.setInformativeText("Do you want to continue?");
+    msgBox.setStandardButtons(QMessageBox::Yes| QMessageBox::Cancel);
+    msgBox.setDefaultButton(QMessageBox::Yes);
+    int ret = msgBox.exec();
+    switch (ret) {
+       case QMessageBox::Yes:
+          {  existingProject *exPro = new existingProject();
+            this->close();}
+           break;
+       case QMessageBox::Cancel:
+
+           break;
+       default:
+           // should never be reached
+           break;
+     }
+
 }
 
 void MainWindow::quitter()

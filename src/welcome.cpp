@@ -52,15 +52,16 @@ welcome::welcome()
         buttonNewProject = new QPushButton("New Project");
         buttonOpenExisting= new QPushButton("Existing Project");
             buttonNewProject->setFixedSize(220,80);
-            buttonNewProject->setToolTip("Createa new project");
-            buttonNewProject->setStyleSheet(" background-color:#D4D4D4;color : black; font: bold 17pt;border-style :outset; border-width: 3px;border-radius: 8px;\
-                                                border-color : black; padding: 6px;");
+
+            buttonNewProject->setStyleSheet(" QPushButton{background-color:#D4D4D4;color : black; font: bold 17pt;border-style :outset; border-width: 3px;border-radius: 8px;\
+                                                border-color : black; padding: 6px;}");
+            buttonNewProject->setToolTip("Create a new project");
             buttonNewProject->setCursor(Qt::PointingHandCursor);
 
             buttonOpenExisting->setFixedSize(220,80);
             buttonOpenExisting->setToolTip("Open an existing project");
-            buttonOpenExisting->setStyleSheet(" background-color:#D4D4D4;color : black; font: bold 17pt;border-style :outset; border-width: 3px;border-radius: 8px;\
-                                                border-color : black; padding: 6px;");
+            buttonOpenExisting->setStyleSheet(" QPushButton{background-color:#D4D4D4;color : black; font: bold 17pt;border-style :outset; border-width: 3px;border-radius: 8px;\
+                                                border-color : black; padding: 6px;}");
             buttonOpenExisting->setCursor(Qt::PointingHandCursor);
             leftButton->addWidget(buttonNewProject);
             rightButton->addWidget(buttonOpenExisting);
