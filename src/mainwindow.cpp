@@ -377,7 +377,7 @@ void MainWindow::colorClick()
 {
      QColor couleur = QColorDialog::getColor(this->zoneDes->getPenColor(), this);
      zoneDes->setPenColor(couleur);
-     QString style = "background-color : "+ couleur.name()+"; border-radius: 5px;";
+     QString style = "QToolButton{background-color : "+ couleur.name()+"; border-radius: 5px;}";
      buttonColor->setStyleSheet(style);
 }
 
@@ -499,10 +499,12 @@ void MainWindow::hideBackground(bool checked)
     if(checked)
     {
         setImage(":Fond/blanc.png");
+        backgButton->setToolTip("Show the image you are working on");
     }
     else
     {
         setImage(imgPath);
+        backgButton->setToolTip("Hide the image you are working on");
     }
     setFocus();
 }

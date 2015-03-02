@@ -98,7 +98,12 @@ void zoneImage::setCurrentFrame(int index)
 
 //quand on choisit une image dans le defiler
 void zoneImage::imageChanged(QString path,QString desPath,int value)
-{
+{//-----------------------------------
+  /*  if(value%20 !=0)
+        {area->verticalScrollBar()->setValue((value%20)*95);}
+    else
+        {area->verticalScrollBar()->setValue(value*99);}*/
+  //-----------------------------------------
     fnumber->setValue(value);
     emit imageChange(path, desPath,value);
 }

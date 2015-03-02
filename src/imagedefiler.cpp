@@ -21,14 +21,14 @@ imageDefiler::imageDefiler(QString imgfolder, QString desFolder)
 void imageDefiler::nextClick()
 {
     modifieLayout(index);
-    activeImage(1);
+   // activeImage(1);
     emit viewChange();
 }
 
 void imageDefiler::previousClick()
 {
     modifieLayout(index -40);
-    activeImage(1);
+   // activeImage(1);
 }
 void clearLayout(QLayout *layout){
     QLayoutItem *item;

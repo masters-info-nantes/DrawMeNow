@@ -71,7 +71,7 @@ zonePreview::zonePreview()
     //style
     //    preview->setStyleSheet("border-color: black; color : black; font: bold 15pt; border-style :outset; border-radius : 3px;border-width: 3px; background-color: white");
 
-    preview->setStyleSheet("border-color: black; color : black; font: bold 15pt; ");
+    preview->setStyleSheet("QPushButton{border-color: black; color : black; font: bold 15pt; }");
     preview->setCursor(Qt::PointingHandCursor);
     layout->addWidget(preview,0,3,2,1);
     QSizePolicy spInfo5(QSizePolicy::Preferred, QSizePolicy::Preferred);
